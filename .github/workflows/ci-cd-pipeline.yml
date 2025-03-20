@@ -24,7 +24,7 @@ jobs:
       - name: Install Dependencies
         run: |
           pip install --upgrade pip
-          pip install pytest 
+          pip install pytest pyyaml
 
       - name: Run Tests
         working-directory: build_bikesharing/Application
