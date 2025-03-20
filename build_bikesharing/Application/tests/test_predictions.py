@@ -4,7 +4,6 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../../")))
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../")))
 
-from sklearn.model_selection import train_test_split
 from bikeshare_model.processing.data_manager import read_input_data
 from bikeshare_model.processing.data_manager import loadModelAndPredict
 from bikeshare_model.processing.data_manager import getUserDataPreprocessed 
