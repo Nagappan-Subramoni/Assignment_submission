@@ -11,3 +11,4 @@ pydantic
 psutil
 requests
 build
+./bikesharingrentals-0.1.16-py3-none-any.whl

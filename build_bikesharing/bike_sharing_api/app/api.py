@@ -1,8 +1,12 @@
 #from fastapi import FastAPI
+import os
+import sys
+# sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+
 from bikeshare_model.processing import data_manager
 from pydantic import BaseModel
 from schemas.health import HealthResponse
-import os
 import glob
 import subprocess
 from fastapi import APIRouter, BackgroundTasks
