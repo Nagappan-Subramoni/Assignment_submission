@@ -62,7 +62,7 @@ jobs:
           name: built-package  # Fixed artifact name
           path: build_bikesharing/bike_sharing_api/
 
-      - name: Debug - Verify Downloaded Package
+      - name: Debug - Verify Downloaded Package Trigger
         run: ls -l build_bikesharing/bike_sharing_api/
 
       - name: Log in to DockerHub
