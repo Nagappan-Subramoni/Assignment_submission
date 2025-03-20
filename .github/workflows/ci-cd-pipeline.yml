@@ -49,7 +49,7 @@ jobs:
       - name: Debug - List Files to Verify Dockerfile Location
         run: |
           echo "Listing contents of build_bikesharing/bike_sharing_api/"
-          ls -l /build_bikesharing/bike_sharing_api/
+          ls -l build_bikesharing/bike_sharing_api/
 
       - name: Download Built Application
         uses: actions/download-artifact@v4
