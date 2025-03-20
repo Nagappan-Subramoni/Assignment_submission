@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "BikeSharingRentals"
+version = "0.1.14"
+description = "Bike Sharing app prediction"
+authors = [{ name = "Nagappan Subramoni", email = "nagappans@gmail.com" }]
+license = { text = "MIT" }
+readme = "README.md"
+dependencies = [
+    "numpy",
+    "pandas",
+    "pytest",
+    "scikit-learn",
+    "joblib",
+    "pyyaml"
+]
+
+[tool.mypy]
+strict = true
+ignore_missing_imports = true

@@ -1,0 +1,5 @@
+.vs
+.vscode
+BikeSharingRentals.egg-info
+dist/
+BicycleRental_NEW.sln

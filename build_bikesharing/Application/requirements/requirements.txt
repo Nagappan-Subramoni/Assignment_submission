@@ -1,0 +1,13 @@
+numpy
+pandas
+scikit-learn
+joblib
+pyyaml
+pytest
+fastapi
+uvicorn
+sqlalchemy
+pydantic
+psutil
+requests
+build
