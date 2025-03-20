@@ -3,13 +3,16 @@ import pandas as pd
 import bikeshare_model.pipeline as pipeline
 import joblib
 from bikeshare_model import DATASET_PATH,MODEL_PATH
-    
+import os
 def read_input_data():
     df=pd.read_csv(DATASET_PATH)
     return df
 
 def fitAndSave(X_train,y_train):
     model= pipeline.piperline_fit.fit(X_train,y_train)
+    # Ensure the directory exists before saving
+    model_dir = os.path.dirname(MODEL_PATH)
+    os.makedirs(model_dir, exist_ok=True)
     joblib.dump(model,MODEL_PATH)
     return model
 
