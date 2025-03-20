@@ -36,6 +36,17 @@ jobs:
           name: built-application
           path: build_bikesharing/Application/dist/  # Adjust if output path differs
 
+      - name: Debug - Check Build Output
+        run: ls -l build_bikesharing/Application/dist/
+
+      - name: Copy Built Package to API Folder
+        run: |
+          mkdir -p build_bikesharing/bike_sharing_api/
+          cp -r build_bikesharing/Application/dist/* build_bikesharing/bike_sharing_api/
+
+      - name: Debug - Verify Copied Files
+        run: ls -l build_bikesharing/bike_sharing_api/
+
   # 🔥 Step 2: Build and Push Docker Image
   build_docker:
     runs-on: ubuntu-latest
