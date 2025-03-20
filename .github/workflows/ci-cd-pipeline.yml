@@ -3,10 +3,10 @@ name: CI/CD Pipeline for Model Training, Testing, and Docker Deployment
 on:
   push:
     branches:
-      - main  # Runs on every push to main branch
+      - main  # Runs on every push to the main branch
 
 jobs:
-  
+
   # 🔥 Step 1: Train, Build & Test the Application
   train_build_test:
     runs-on: ubuntu-latest
@@ -14,7 +14,7 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # Ensure all files and folders are pulled
+          fetch-depth: 0
 
       - name: Set Up Python
         uses: actions/setup-python@v4
@@ -27,25 +27,17 @@ jobs:
           pip install build
 
       - name: Run Training, Build, and Test
-        working-directory: build_bikesharing/Application  # Ensure correct path
+        working-directory: build_bikesharing/Application
         run: python -m build
-
-      - name: Save Build Artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: built-application
-          path: build_bikesharing/Application/dist/  # Adjust if output path differs
 
       - name: Debug - Check Build Output
         run: ls -l build_bikesharing/Application/dist/
 
-      - name: Copy Built Package to API Folder
-        run: |
-          mkdir -p build_bikesharing/bike_sharing_api/
-          cp -r build_bikesharing/Application/dist/* build_bikesharing/bike_sharing_api/
-
-      - name: Debug - Verify Copied Files
-        run: ls -l build_bikesharing/bike_sharing_api/
+      - name: Upload Built Package as Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: built-package
+          path: build_bikesharing/Application/dist/
 
   # 🔥 Step 2: Build and Push Docker Image
   build_docker:
@@ -57,22 +49,27 @@ jobs:
         with:
           fetch-depth: 0  # Ensures all files and folders are present
 
-      - name: Debug - List Files to Verify Dockerfile Location
+      - name: Debug - List Repository Contents
         run: |
-          echo "Listing contents of build_bikesharing/bike_sharing_api/"
+          echo "Listing contents of repository:"
+          ls -l
+          echo "Listing contents of build_bikesharing:"
           ls -l build_bikesharing
 
-      - name: Download Built Application
+      - name: Download Built Package
         uses: actions/download-artifact@v4
         with:
-          name: built-application
-          path: build_bikesharing/Application/dist/
+          name: built-package  # Fixed artifact name
+          path: build_bikesharing/bike_sharing_api/
+
+      - name: Debug - Verify Downloaded Package
+        run: ls -l build_bikesharing/bike_sharing_api/
 
       - name: Log in to DockerHub
         run: echo "${{ secrets.DOCKER_ACCESS_TOKEN }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
       - name: Build Docker Image
-        working-directory: build_bikesharing  
+        working-directory: build_bikesharing
         run: |
           docker build -t ${{ secrets.DOCKER_USERNAME }}/bike_sharing_api:latest .
 
