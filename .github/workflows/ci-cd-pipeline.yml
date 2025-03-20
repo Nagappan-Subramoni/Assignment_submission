@@ -24,7 +24,7 @@ jobs:
       - name: Install Dependencies
         run: |
           pip install --upgrade pip
-          pip install pytest pyyaml
+          pip install pyyaml scikit-learn pytest build pandas 
 
       - name: Run Tests
         working-directory: build_bikesharing/Application
