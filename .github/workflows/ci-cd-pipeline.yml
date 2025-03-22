@@ -28,7 +28,7 @@ jobs:
 
       - name: Run Tests
         working-directory: build_bikesharing/Application
-        run: pytest tests/  # Runs all test files inside 'tests' folder
+        run: pytest tests/
 
   # 🔥 Step 2: Train, Build & Test (Runs Only If Step 1 Passes)
   train_build_test:
