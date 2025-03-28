@@ -1,6 +1,7 @@
 import requests
 
-url = "http://127.0.0.1:8000/predict/"
+url = "http://51.20.37.214:8000/predict/"
+# url = "http://127.0.0.1:8000/predict/"
 
 data = {
     "dteday": "05-11-2012",

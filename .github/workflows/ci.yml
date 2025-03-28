@@ -57,18 +57,29 @@ jobs:
           ls -la
           cat MANIFEST.in
 
-      - name: Run Training, Build, and Test
+      - name: Train Model
+        working-directory: build_bikesharing/Application/bikeshare_model
+        run: |
+          echo "Starting model training..."
+          python train_pipeline.py
+          echo "Training completed successfully"
+
+      - name: Build Package
         working-directory: build_bikesharing/Application
         run: |
-          # Run any training scripts if needed
-          # python train_model.py
-          
-          # Clean previous builds
+          echo "Cleaning previous builds..."
           rm -rf dist/ build/
           
-          # Build package
+          echo "Building package..."
           python -m build --sdist --wheel
+          echo "Package built successfully"
 
+      - name: Run Tests
+        working-directory: build_bikesharing/Application
+        run: |
+          echo "Running tests..."
+          pytest tests/
+          echo "Tests completed successfully"
       - name: Upload Built Package as Artifact
         uses: actions/upload-artifact@v4
         with:
