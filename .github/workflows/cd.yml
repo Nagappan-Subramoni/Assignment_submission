@@ -1,6 +1,6 @@
 name: CD Pipeline
 
-# Only trigger, when the build workflow succeeded i.e. CI Pipeline
+# Only trigger when the CI Pipeline workflow completes
 on:
   workflow_run:
     workflows: ["CI Pipeline"]
@@ -13,21 +13,19 @@ jobs:
 
     steps:
       - name: Debug Docker User
-      - run:
-          echo "Docker User: $DOCKER_USER"
-      - env:
+        run: echo "Docker User: $DOCKER_USER"
+        env:
           DOCKER_USER: ${{ secrets.DOCKER_USERNAME }}
 
       - name: Pull Docker Image
-        env: 
-          DOCKER_USER: ${{ secrets.DOCKER_USERNAME }}
         run: sudo docker pull ${{ secrets.DOCKER_USERNAME }}/bike_sharing_api:latest
+        env:
+          DOCKER_USER: ${{ secrets.DOCKER_USERNAME }}
 
       - name: Delete Old Docker Container
         run: sudo docker rm -f bike_sharing_api-container || true
-    
-      - name: Run Docker Container
-        env: 
-          DOCKER_USER: ${{ secrets.DOCKER_USERNAME }}
-        run: sudo docker run -it -d -p 8001:8000 --name bike_sharing_api-container ${{ secrets.DOCKER_USERNAME }}/bike_sharing_api:latest
 
+      - name: Run Docker Container
+        run: sudo docker run -it -d -p 8001:8000 --name bike_sharing_api-container ${{ secrets.DOCKER_USERNAME }}/bike_sharing_api:latest
+        env:
+          DOCKER_USER: ${{ secrets.DOCKER_USERNAME }}
