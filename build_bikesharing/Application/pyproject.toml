@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "BikeSharingRentals"
-version = "0.1.17"
+version = "0.1.18"
 description = "Bike Sharing app prediction"
 authors = [{ name = "Nagappan Subramoni", email = "nagappans@gmail.com" }]
 license = { text = "MIT" }
@@ -21,3 +21,6 @@ dependencies = [
 [tool.mypy]
 strict = true
 ignore_missing_imports = true
+
+[tool.setuptools]
+include-package-data = true

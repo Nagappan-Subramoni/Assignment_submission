@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="BikeSharingRentals",
-    version="0.1.3",
+    version="0.1.18",
     description="Bike Sharing app prediction",
     author="Nagappan Subramoni",
     author_email="nagappans@gmail.com",
