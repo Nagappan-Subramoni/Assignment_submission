@@ -12,11 +12,17 @@ jobs:
     runs-on: self-hosted
 
     steps:
+      - name: Debug Docker User
+      - run:
+          echo "Docker User: $DOCKER_USER"
+      - env:
+      - DOCKER_USER: ${{ secrets.DOCKER_USERNAME }}
+
       - name: Pull Docker Image
         env: 
-          DOCKER_USER: ${{ secrets.DOCKER_USER_NAME }}
+          DOCKER_USER: ${{ secrets.DOCKER_USERNAME }}
         run: sudo docker pull $DOCKER_USER/bike_sharing_api:latest
-    
+
       - name: Delete Old Docker Container
         run: sudo docker rm -f bike_sharing_api-container || true
     
