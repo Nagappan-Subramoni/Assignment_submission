@@ -65,8 +65,8 @@ jobs:
 
       - name: Check Built Package Contents
         run: |
-          tar -tf dist/*.tar.gz  
-          unzip -l dist/*.whl    
+          tar -tf build_bikesharing/Application/dist/*.tar.gz  
+          unzip -l build_bikesharing/Application/dist/*.whl    
 
   # 🔥 Step 3: Build and Push Docker Image (Runs Only If Build Passes)
   build_docker:
