@@ -2,9 +2,9 @@ include README.md
 include LICENSE
 include pyproject.toml
 include mypy.ini
-include bikeshare_model\config.yml
-include bikeshare_model\datasets\bike-sharing-dataset.csv
-include bikeshare_model\trained_models\model.pkl
-include bikeshare_model\VERSION
-include requirements\requirements.txt
-include requirements\test_requirements.txt
+include bikeshare_model/config.yml
+include bikeshare_model/datasets/bike-sharing-dataset.csv
+include bikeshare_model/trained_models/model.pkl
+include bikeshare_model/VERSION
+include requirements/requirements.txt
+include requirements/test_requirements.txt
