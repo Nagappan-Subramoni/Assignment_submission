@@ -6,7 +6,7 @@ WORKDIR /bike_sharing_api
 
 # Copy the requirements file into the container
 COPY bike_sharing_api/requirements.txt /bike_sharing_api/requirements.txt
-COPY bike_sharing_api/bikesharingrentals-0.1.17-py3-none-any.whl /bike_sharing_api/bikesharingrentals-0.1.17-py3-none-any.whl
+COPY bike_sharing_api/bikesharingrentals-0.1.18-py3-none-any.whl /bike_sharing_api/bikesharingrentals-0.1.18-py3-none-any.whl
 
 # Install the dependencies
 RUN pip install --no-cache-dir --upgrade -r /bike_sharing_api/requirements.txt
