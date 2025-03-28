@@ -55,7 +55,7 @@ jobs:
         working-directory: build_bikesharing/Application
         run: |
           ls -la
-          cat MANIFEST.in
+          cat Manifest.in
 
       - name: Run Training, Build, and Test
         working-directory: build_bikesharing/Application
