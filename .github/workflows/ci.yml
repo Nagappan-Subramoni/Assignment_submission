@@ -50,6 +50,9 @@ jobs:
           pip install --upgrade pip
           pip install build
 
+      - name: Verify MANIFEST.in Files Before Build
+        run: ls -R
+
       - name: Run Training, Build, and Test
         working-directory: build_bikesharing/Application
         run: python -m build
@@ -59,6 +62,11 @@ jobs:
         with:
           name: built-package
           path: build_bikesharing/Application/dist/
+
+      - name: Check Built Package Contents
+        run: |
+          tar -tf dist/*.tar.gz  
+          unzip -l dist/*.whl    
 
   # 🔥 Step 3: Build and Push Docker Image (Runs Only If Build Passes)
   build_docker:
