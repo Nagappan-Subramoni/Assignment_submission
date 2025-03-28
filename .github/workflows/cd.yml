@@ -1,6 +1,6 @@
 name: CD Pipeline
 
-# Only trigger when the CI Pipeline workflow completes
+# Trigger deployment only when CI Pipeline completes successfully
 on:
   workflow_run:
     workflows: ["CI Pipeline"]
@@ -9,19 +9,25 @@ on:
 
 jobs:
   deploy:
-    runs-on: self-hosted
+    runs-on: self-hosted  # This runs on your AWS EC2 instance
 
     steps:
-
-      - name: Pull Docker Image
+      - name: Pull Latest Docker Image
         run: sudo docker pull ${{ secrets.DOCKER_USERNAME }}/bike_sharing_api:latest
-        env:
-          DOCKER_USER: ${{ secrets.DOCKER_USERNAME }}
 
-      - name: Delete Old Docker Container
-        run: sudo docker rm -f bike_sharing_api-container || true
+      - name: Stop & Remove Existing Container
+        run: |
+          sudo docker stop bike_sharing_api-container || true
+          sudo docker rm -f bike_sharing_api-container || true
 
-      - name: Run Docker Container
-        run: sudo docker run -it -d -p 8000:8000 --name bike_sharing_api-container ${{ secrets.DOCKER_USERNAME }}/bike_sharing_api:latest
-        env:
-          DOCKER_USER: ${{ secrets.DOCKER_USERNAME }}
+      - name: Remove Old Docker Image
+        run: |
+          sudo docker rmi ${{ secrets.DOCKER_USERNAME }}/bike_sharing_api:latest || true
+
+      - name: Run New Docker Container
+        run: |
+          sudo docker run -it -d -p 8000:8000 --name bike_sharing_api-container \
+          ${{ secrets.DOCKER_USERNAME }}/bike_sharing_api:latest
+
+      - name: Verify Running Container
+        run: sudo docker ps -a
