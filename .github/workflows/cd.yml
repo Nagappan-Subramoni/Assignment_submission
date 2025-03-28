@@ -22,6 +22,6 @@ jobs:
         run: sudo docker rm -f bike_sharing_api-container || true
 
       - name: Run Docker Container
-        run: sudo docker run -it -d -p 8001:8000 --name bike_sharing_api-container ${{ secrets.DOCKER_USERNAME }}/bike_sharing_api:latest
+        run: sudo docker run -it -d -p 8000:8000 --name bike_sharing_api-container ${{ secrets.DOCKER_USERNAME }}/bike_sharing_api:latest
         env:
           DOCKER_USER: ${{ secrets.DOCKER_USERNAME }}
