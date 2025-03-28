@@ -1,4 +1,4 @@
-name: CI/CD Pipeline for Model Testing, Training, and Docker Deployment
+name: CI Pipeline
 
 on:
   push:
