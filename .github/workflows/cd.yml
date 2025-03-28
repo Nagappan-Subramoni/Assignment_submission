@@ -12,10 +12,6 @@ jobs:
     runs-on: self-hosted
 
     steps:
-      - name: Debug Docker User
-        run: echo "Docker User: $DOCKER_USER"
-        env:
-          DOCKER_USER: ${{ secrets.DOCKER_USERNAME }}
 
       - name: Pull Docker Image
         run: sudo docker pull ${{ secrets.DOCKER_USERNAME }}/bike_sharing_api:latest
