@@ -49,7 +49,7 @@ jobs:
       - name: Install Dependencies
         working-directory: build_bikesharing/Application
         run: |
-          pip install --upgrade pip setuptools wheel build
+          pip install --upgrade pip setuptools wheel build pyyaml scikit-learn pytest build pandas
 
       - name: Verify MANIFEST.in Files Before Build
         working-directory: build_bikesharing/Application
