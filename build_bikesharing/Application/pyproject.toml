@@ -6,8 +6,10 @@ build-backend = "setuptools.build_meta"
 name = "BikeSharingRentals"
 version = "0.1.18"
 description = "Bike Sharing app prediction"
-authors = [{ name = "Nagappan Subramoni", email = "nagappans@gmail.com" }]
-license = { text = "MIT" }
+authors = [
+    { name = "Nagappan Subramoni", email = "nagappans@gmail.com" }
+]
+license = "MIT"
 readme = "README.md"
 dependencies = [
     "numpy",
