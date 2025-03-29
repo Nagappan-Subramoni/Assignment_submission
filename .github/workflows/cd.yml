@@ -12,6 +12,12 @@ jobs:
     runs-on: self-hosted  # This runs on your AWS EC2 instance
 
     steps:
+      - name: Clean up disk space
+        run: |
+          sudo apt-get clean
+          sudo rm -rf /var/lib/apt/lists/*
+          sudo rm -rf /usr/local/lib/python3.10/site-packages/*
+
       - name: Pull Latest Docker Image
         run: sudo docker pull ${{ secrets.DOCKER_USERNAME }}/bike_sharing_api:latest
 
@@ -31,3 +37,4 @@ jobs:
 
       - name: Verify Running Container
         run: sudo docker ps -a
+
