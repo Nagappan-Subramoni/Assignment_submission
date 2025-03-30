@@ -26,9 +26,25 @@ jobs:
           sudo docker stop bike_sharing_api-container || true
           sudo docker rm -f bike_sharing_api-container || true
 
-      - name: Remove Old Docker Image
+      - name: Remove Old Docker Images
         run: |
+          # Remove the specific image if it exists
           sudo docker rmi ${{ secrets.DOCKER_USERNAME }}/bike_sharing_api:latest || true
+          
+          # Remove all dangling images (untagged images)
+          sudo docker image prune -f
+          
+          # Remove unused images (not just dangling ones)
+          sudo docker image prune -a -f
+          
+          # Remove unused containers
+          sudo docker container prune -f
+          
+          # Remove unused networks
+          sudo docker network prune -f
+          
+          # Remove unused volumes (be careful with this if you have important data in volumes)
+          # sudo docker volume prune -f
 
       - name: Run New Docker Container
         run: |
@@ -36,5 +52,8 @@ jobs:
           ${{ secrets.DOCKER_USERNAME }}/bike_sharing_api:latest
 
       - name: Verify Running Container
-        run: sudo docker ps -a
-
+        run: |
+          sudo docker ps -a
+          echo "Checking container health..."
+          sleep 5  # Give container time to start
+          curl -f http://localhost:8000/health || exit 1
