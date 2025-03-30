@@ -1,6 +1,7 @@
-#from fastapi import FastAPI
+from fastapi import FastAPI
 import os
 import sys
+
 # sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
@@ -13,11 +14,23 @@ from fastapi import APIRouter, BackgroundTasks
 import signal
 import psutil
 
-app=APIRouter()
+# Create the main FastAPI app
+app = FastAPI(
+    title="Bike Share Prediction API",
+    description="API for predicting bike rental demand based on various parameters",
+    version="1.0.0",
+    docs_url="/docs",  # Enables Swagger UI at /docs
+    redoc_url="/redoc",  # Enables ReDoc at /redoc
+    openapi_url="/openapi.json"  # The OpenAPI schema URL
+)
+
+# Create your router
+router = APIRouter()
+
 
 # Define the request model
 class PredictionRequest(BaseModel):
-    dteday: str 
+    dteday: str
     season: str
     hr: str
     holiday: str
@@ -29,32 +42,56 @@ class PredictionRequest(BaseModel):
     hum: int
     windspeed: float
 
+
 class PredictionResponse(BaseModel):
     predicted_rentals: float
 
-@app.post("/predict/")
+
+@router.post("/predict/", response_model=PredictionResponse)
 async def predict(request: PredictionRequest):
-    
-    data={'dteday': request.dteday , 'season': request.season , 'hr' : request.hr ,
-          'holiday' : request.holiday,'weekday' : request.weekday,
-          'workingday':request.workingday, 'weathersit': request.weathersit, 
-          'temp': request.temp,'atemp' : request.atemp, 'hum': request.hum,
-          'windspeed': request.windspeed}
+    """
+    Predict bike rental demand based on input parameters.
+
+    Parameters:
+    - **dteday**: Date in YYYY-MM-DD format
+    - **season**: Season (1:spring, 2:summer, 3:fall, 4:winter)
+    - **hr**: Hour (0 to 23)
+    - **holiday**: Whether day is holiday (0:No, 1:Yes)
+    - **weekday**: Day of week (0 to 6)
+    - **workingday**: Working day (0:No, 1:Yes)
+    - **weathersit**: Weather situation (1:Clear, 2:Misty, 3:Light Snow/Rain, 4:Heavy Rain/Snow)
+    - **temp**: Normalized temperature in Celsius
+    - **atemp**: Normalized feeling temperature in Celsius
+    - **hum**: Normalized humidity (0 to 100)
+    - **windspeed**: Normalized wind speed
+
+    Returns:
+    - Predicted number of bike rentals
+    """
+    data = {'dteday': request.dteday, 'season': request.season, 'hr': request.hr,
+            'holiday': request.holiday, 'weekday': request.weekday,
+            'workingday': request.workingday, 'weathersit': request.weathersit,
+            'temp': request.temp, 'atemp': request.atemp, 'hum': request.hum,
+            'windspeed': request.windspeed}
 
     print(f'Got Input data {data}')
-    X=data_manager.getUserDataPreprocessed(data)
+    X = data_manager.getUserDataPreprocessed(data)
     print(f'After preprocessing {X}')
-    y_pred=data_manager.loadModelAndPredict(X_test=X)
+    y_pred = data_manager.loadModelAndPredict(X_test=X)
     print(f'Predicted Value {y_pred}')
     return PredictionResponse(predicted_rentals=float(y_pred[0]))
 
-@app.get("/health", response_model=HealthResponse)
+
+@router.get("/health", response_model=HealthResponse)
 async def health_check():
+    """Check API health status"""
     return HealthResponse(status="ok", message="API is running")
+
 
 # Directory where .whl files are stored
 WHL_DIRECTORY = os.getcwd()
-print('Wheel Directory',WHL_DIRECTORY)
+print('Wheel Directory', WHL_DIRECTORY)
+
 
 def get_latest_whl():
     """Find the latest .whl file in the directory."""
@@ -62,6 +99,7 @@ def get_latest_whl():
         glob.glob(os.path.join(WHL_DIRECTORY, "*.whl")), key=os.path.getmtime, reverse=True
     )
     return whl_files[0] if whl_files else None
+
 
 def install_latest_whl():
     """Installs the latest available .whl file."""
@@ -95,8 +133,13 @@ def restart_server():
         creationflags=subprocess.CREATE_NEW_CONSOLE,
     )
 
-@app.get("/upgrade")
+
+@router.get("/upgrade")
 async def upgrade_service(background_tasks: BackgroundTasks):
-    """API Endpoint to manually trigger an upgrade."""
+    """Trigger a service upgrade by installing the latest .whl file"""
     background_tasks.add_task(install_latest_whl)
     return {"message": "Upgrade process started in the background."}
+
+
+# Include the router in the main app
+app.include_router(router)
