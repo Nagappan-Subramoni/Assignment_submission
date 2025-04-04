@@ -1,6 +1,6 @@
 import requests
 
-url = "http://51.21.195.148:8000/predict/"
+url = "http://13.60.15.54:8000/predict/"
 # url = "http://127.0.0.1:8000/predict/"
 
 data = {
